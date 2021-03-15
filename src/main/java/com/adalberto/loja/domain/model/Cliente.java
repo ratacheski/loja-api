@@ -1,4 +1,5 @@
 package com.adalberto.loja.domain.model;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,22 +11,14 @@ import javax.validation.constraints.Size;
 
 @Entity
 public class Cliente {
-	
+
 	@Column(name = "nome")
-	@NotBlank
-	@Size(max = 255)
 	private String nome;
 	@Column(name = "cpf")
-	@NotBlank
-	@Size(max = 11)
 	private String cpf;
 	@Column(name = "email")
-	@Size(max = 255)
-	@Email
 	private String email;
 	@Column(name = "senha")
-	@NotBlank
-	@Size(max = 255)
 	private String senha;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
