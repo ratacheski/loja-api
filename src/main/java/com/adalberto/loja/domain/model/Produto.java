@@ -1,28 +1,29 @@
 package com.adalberto.loja.domain.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Produto {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+
+	@Column(name = "nome")
 	private String nome;
+
+	@Column(name = "preco")
 	private double preco;
-
-	public Produto() {
-		super();
-
-	}
-
-	public Produto(int id, String nome, double preco) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.preco = preco;
-	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + id;
 		return result;
 	}
 
@@ -35,10 +36,7 @@ public class Produto {
 		if (getClass() != obj.getClass())
 			return false;
 		Produto other = (Produto) obj;
-		if (nome == null) {
-			if (other.nome != null)
-				return false;
-		} else if (!nome.equals(other.nome))
+		if (id != other.id)
 			return false;
 		return true;
 	}
