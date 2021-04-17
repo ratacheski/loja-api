@@ -5,9 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 @Entity
 public class Cliente {
@@ -24,10 +21,6 @@ public class Cliente {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	public Cliente() {
-		super();
-
-	}
 
 	@Override
 	public int hashCode() {
@@ -49,20 +42,6 @@ public class Cliente {
 		if (id != other.id)
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Cliente [nome=" + nome + ", cpf=" + cpf + ", email=" + email + ", senha=" + senha + ", id=" + id + "]";
-	}
-
-	public Cliente(String nome, String cpf, String email, String senha, int id) {
-		super();
-		this.nome = nome;
-		this.cpf = cpf;
-		this.email = email;
-		this.senha = senha;
-		this.id = id;
 	}
 
 	public String getNome() {
