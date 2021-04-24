@@ -1,5 +1,9 @@
 package com.adalberto.loja.domain.model.enums;
 
+import java.util.stream.Stream;
+
+import com.adalberto.loja.domain.exceptions.RegraDeNegocioException;
+
 public enum FormaPagamento {
 
 	DINHEIRO(1, "Dinheiro"), DEBITO(2, "Débito"), CREDITO(3, "Crédito"), PIX(4, "Pix");
@@ -26,17 +30,13 @@ public enum FormaPagamento {
 	public String getMsg() {
 		return this.msg;
 	}
-	
-	public static FormaPagamento getByValor(int valor) {
-		
-		for(FormaPagamento forma : values()) {
-			if(forma.valor == valor) {
-				return forma;
-			}
-		}
-		return null;
+
+	public static FormaPagamento forma(int valor) {
+
+		FormaPagamento[] formas = FormaPagamento.values();
+		Stream<FormaPagamento> stream = Stream.of(formas);
+		stream = stream.filter(forma -> forma.getValor() == valor);
+		return stream.findFirst().orElseThrow(() -> new RegraDeNegocioException("Forma inexistente"));
 	}
-	
 
 }
-

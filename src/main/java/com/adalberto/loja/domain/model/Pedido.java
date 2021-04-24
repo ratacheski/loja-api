@@ -4,12 +4,16 @@ import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
+import javax.persistence.PrePersist;
+import javax.persistence.Transient;
 
 import com.adalberto.loja.domain.model.enums.FormaPagamento;
 import com.adalberto.loja.domain.model.enums.StatusPedido;
@@ -20,11 +24,23 @@ public class Pedido {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+
 	@ManyToOne
 	private Cliente cliente;
+
 	private OffsetDateTime data;
-	private StatusPedido status;
+
+	@Transient
+	private StatusPedido statusPedido;
+
+	@Column(name = "status")
+	private Integer valorStatusPedido;
+
+	@Transient
 	private FormaPagamento formaPagamento;
+
+	@Column(name = "forma_pagamento")
+	private Integer valorFormaPagamento;
 
 	@OneToMany(mappedBy = "pedido")
 	Set<ItemPedido> itens = new HashSet<ItemPedido>();
@@ -87,11 +103,11 @@ public class Pedido {
 	}
 
 	public StatusPedido getStatus() {
-		return status;
+		return statusPedido;
 	}
 
-	public void setStatus(StatusPedido status) {
-		this.status = status;
+	public void setStatus(StatusPedido statusPedido) {
+		this.statusPedido = statusPedido;
 	}
 
 	public FormaPagamento getFormaPagamento() {
@@ -100,6 +116,44 @@ public class Pedido {
 
 	public void setFormaPagamento(FormaPagamento formaPagamento) {
 		this.formaPagamento = formaPagamento;
+	}
+
+	public Integer getValorFormaPagamento() {
+		return valorFormaPagamento;
+	}
+
+	public void setValorFormaPagamento(Integer valorFormaPagamento) {
+		this.valorFormaPagamento = valorFormaPagamento;
+	}
+
+	public Integer getValorStatusPedido() {
+		return valorStatusPedido;
+	}
+
+	public void setValorStatusPedido(Integer valorStatusPedido) {
+		this.valorStatusPedido = valorStatusPedido;
+	}
+
+	@PostLoad
+	void fillTransientFp() {
+		if (valorFormaPagamento != null) {
+			FormaPagamento forma = FormaPagamento.forma(valorFormaPagamento);
+			formaPagamento = forma;
+		}
+		if (valorStatusPedido != null) {
+			StatusPedido status = StatusPedido.status(valorStatusPedido);
+			statusPedido = status;
+		}
+	}
+
+	@PrePersist
+	void fillPersistentFp() {
+		if (formaPagamento != null) {
+			valorFormaPagamento = formaPagamento.getValor();
+		}
+		if (statusPedido != null) {
+			valorStatusPedido = statusPedido.getValor();
+		}
 	}
 
 	public double getValorTotal() {
