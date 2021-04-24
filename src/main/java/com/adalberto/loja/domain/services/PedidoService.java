@@ -69,7 +69,7 @@ public class PedidoService {
 		if (!pedido.getStatus().equals(StatusPedido.FINALIZADO)) {
 			throw new RegraDeNegocioException("Este pedido não pode ser pago");
 		}
-		FormaPagamento forma = FormaPagamento.getByValor(valor);
+		FormaPagamento forma = FormaPagamento.forma(valor); // getByValor retirado 
 		if (forma == null) {
 			throw new RegraDeNegocioException("Forma de pagamento inexistente");
 		}
