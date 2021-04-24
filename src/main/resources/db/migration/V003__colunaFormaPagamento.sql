@@ -1,0 +1,1 @@
+alter table pedido add column forma_pagamento int;
